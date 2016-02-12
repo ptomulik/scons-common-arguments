@@ -3,7 +3,7 @@ scons-common-arguments
 
 | travis-ci | appveyor  | coveralls |
 |-----------|-----------|-----------|
-|[![Build Status](https://travis-ci.org/ptomulik/scons-common-arguments.png?branch=master)](https://travis-ci.org/ptomulik/scons-common-arguments)| [![Build status](https://ci.appveyor.com/api/projects/status/xdjcgb8tovt605ug?svg=true)](https://ci.appveyor.com/project/ptomulik/scons-common-arguments) | [![Coverage Status](https://coveralls.io/repos/ptomulik/scons-common-arguments/badge.svg?branch=master&service=github)](https://coveralls.io/github/ptomulik/scons-common-arguments?branch=master) |
+|[![Build Status](https://travis-ci.org/ptomulik/scons-common-arguments.png?branch=master)](https://travis-ci.org/ptomulik/scons-common-arguments)| [![Build status](https://ci.appveyor.com/api/projects/status/6cl0xk5e5s07rylh?svg=true)](https://ci.appveyor.com/project/ptomulik/scons-common-arguments) | [![Coverage Status](https://coveralls.io/repos/ptomulik/scons-common-arguments/badge.svg?branch=master&service=github)](https://coveralls.io/github/ptomulik/scons-common-arguments?branch=master) |
 
 Welcome to ``scons-common-arguments``.
 
