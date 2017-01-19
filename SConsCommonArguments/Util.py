@@ -26,68 +26,211 @@ Utility functions used by SConsCommonArguments
 
 __docformat__ = 'restructuredText'
 
-import SConsArguments
-import SCons.Util
+_all_tools = {
+    'ar'        : 'ar',
+    'as'        : 'as',
+    'bikeeper'  : 'bikeeper',
+    'bitkeeper' : 'bitkeeper',
+    'c++'       : 'c++',
+    'cc'        : 'cc',
+    'cvs'       : 'cvs',
+    'dc'        : 'dc',
+    'dlink'     : 'dlink',
+    'docbook'   : 'docbook',
+    'dvipdf'    : 'dvipdf',
+    'dvips'     : 'dvips',
+    'f03'       : 'f03',
+    'f08'       : 'f08',
+    'f77'       : 'f77',
+    'f90'       : 'f90',
+    'f95'       : 'f95',
+    'fortran'   : 'fortran',
+    'gettext'   : 'gettext',
+    'gnulink'   : 'gnulink',
+    'gs'        : 'gs',
+    'jar'       : 'jar',
+    'javac'     : 'javac',
+    'javah'     : 'javah',
+    'lex'       : 'lex',
+    'link'      : 'link',
+    'm4'        : 'm4',
+    'midl'      : 'midl',
+    'mslink'    : 'mslink',
+    'mssdk'     : 'mssdk',
+    'msvc'      : 'msvc',
+    'msvs'      : 'msvs',
+    'perforce'  : 'perforce',
+    'qt'        : 'qt',
+    'rcs'       : 'rcs',
+    'rmic'      : 'rmic',
+    'rpcgen'    : 'rpcgen',
+    'sccs'      : 'sccs',
+    'sconf'     : 'sconf',
+    'sunc++'    : 'sunc++',
+    'swig'      : 'swig',
+    'tar'       : 'tar',
+    'tex'       : 'tex',
+    'yacc'      : 'yacc',
+    'zip'       : 'zip',
+}
 
-MISSING = SConsArguments.MISSING
-
-#############################################################################
-def map_tuples(callback, tuples, name_filter = lambda x : True):
-    """Map all predefined GNU variable tuples (name, desc, default) via
-    `callback`.
-
-    :Parameters:
-        callback : callable
-            function of type ``callback(*args)``, where args is one of the
-            tuples being processed
-        tuples : list
-            a list of tuples, each entry of the list should be a tuple of the
-            form ``(name[, desc[, default])``, where ``name`` is the name of
-            argument, ``desc`` (optional) is description (used as help message)
-            and ``default`` (optional) is default value.
-        name_filter : callable
-            callable object (e.g. lambda) of type ``name_filter(name) ->
-            boolean`` used to filter-out unwanted variables; only these
-            variables are processed, for which name_filter returns ``True``
-
-    :Returns:
-        returns result of mapping through `callback`
-    """
-    if SCons.Util.is_Sequence(name_filter):
-        seq = name_filter
-        name_filter = lambda x : x in seq
-    tuples = filter(lambda t : name_filter(t[0]), tuples)
-    return map(lambda x : callback(*x), tuples)
-
-#############################################################################
-def names_from_tuples(tuples, name_filter = lambda x : True):
-    """Return list of argument names extracted from argument tuples.
-
-    :Parameters:
-        tuples : list
-            a list of 3-element tuples with, each entry of the list should
-            be a tuple of the form ``(name, desc, default)``, where ``name``
-            is the name of argument, ``desc`` is description (used as help
-            message) and ``default`` is default value.
-        name_filter : callable
-            callable object (e.g. lambda) of type ``name_filter(name) ->
-            boolean`` used to filter-out unwanted variables; only these
-            variables are processed, for which name_filter returns ``True``
-    :Returns:
-        the list of standard GNU directory variable names
-    """
-    return map_tuples(lambda *x : x[0], tuples, name_filter)
-
+##import SConsArguments
+##import SCons.Util
+##
+##MISSING = SConsArguments.MISSING
+##
 ###############################################################################
-def arguments_from_tuples(tuples, **kw):
-    """Convert tuples to argument declarations.
+##def map_tuples(callback, tuples, name_filter = lambda x : True):
+##    """Map all predefined GNU variable tuples (name, desc, default) via
+##    `callback`.
+##
+##    :Parameters:
+##        callback : callable
+##            function of type ``callback(*args)``, where args is one of the
+##            tuples being processed
+##        tuples : list
+##            a list of tuples, each entry of the list should be a tuple of the
+##            form ``(name[, desc[, default])``, where ``name`` is the name of
+##            argument, ``desc`` (optional) is description (used as help message)
+##            and ``default`` (optional) is default value.
+##        name_filter : callable
+##            callable object (e.g. lambda) of type ``name_filter(name) ->
+##            boolean`` used to filter-out unwanted variables; only these
+##            variables are processed, for which name_filter returns ``True``
+##
+##    :Returns:
+##        returns result of mapping through `callback`
+##    """
+##    if SCons.Util.is_Sequence(name_filter):
+##        seq = name_filter
+##        name_filter = lambda x : x in seq
+##    tuples = filter(lambda t : name_filter(t[0]), tuples)
+##    return map(lambda x : callback(*x), tuples)
+##
+###############################################################################
+##def names_from_tuples(tuples, name_filter = lambda x : True):
+##    """Return list of argument names extracted from argument tuples.
+##
+##    :Parameters:
+##        tuples : list
+##            a list of 3-element tuples with, each entry of the list should
+##            be a tuple of the form ``(name, desc, default)``, where ``name``
+##            is the name of argument, ``desc`` is description (used as help
+##            message) and ``default`` is default value.
+##        name_filter : callable
+##            callable object (e.g. lambda) of type ``name_filter(name) ->
+##            boolean`` used to filter-out unwanted variables; only these
+##            variables are processed, for which name_filter returns ``True``
+##    :Returns:
+##        the list of standard GNU directory variable names
+##    """
+##    return map_tuples(lambda *x : x[0], tuples, name_filter)
+##
+#################################################################################
+##def arguments_from_tuples(tuples, **kw):
+##    """Convert tuples to argument declarations.
+##
+##    :Parameters:
+##        tuples : list
+##            a list of 3-element tuples with, each entry of the list should
+##            be a tuple of the form ``(name, desc, default)``, where ``name``
+##            is the name of argument, ``desc`` is description (used as help
+##            message) and ``default`` is default value.
+##
+##    :Keywords:
+##        defaults : dict
+##            user-specified default values for the Arguments being declared,
+##        name_filter : callable
+##            callable object (e.g. lambda) of type ``name_filter(name) ->
+##            boolean`` used to filter-out unwanted variables; only these
+##            variables are processed, for which name_filter returns ``True``
+##        nameconv : `SConsArguments._ArgumentNameConv`
+##            a `SConsArguments._ArgumentNameConv` object used to transform
+##            *argument* names to *endpoint* (construction variable, command-line
+##            variable, command-line option) names,
+##        type
+##            create argument of given type (default: 'string')
+##        metavar
+##            use as command-line metavar
+##        env_key_prefix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        env_key_suffix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        env_key_transform
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        var_key_prefix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        var_key_suffix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        var_key_transform
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_key_prefix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_key_suffix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_key_transform
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_prefix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_name_prefix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        opt_name_suffix
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`,
+##        option_transform
+##            passed to `SConsArguments._ArgumentNameConv.__init__()`.
+##
+##    :Returns:
+##        an instance of `SConsArguments._ArgumentDeclarations`
+##    """
+##    # TODO: This is quite unorganized, I should get back here and elaborate
+##    def _callback(name, *args):
+##        try: desc = args[0]
+##        except IndexError: desc = MISSING
+##        try: default = defaults.get(name,args[1])
+##        except IndexError: default = MISSING
+##        if metavar:
+##            _metavar = metavar
+##        else:
+##            # FIXME: especially this, how do we know in general what the
+##            # metavar should we generate for a given variable, do we have any
+##            # idea? This should be probably job for _ArgumentNameConv.
+##            if name.endswith('ext'):
+##                _metavar = 'EXT'
+##            elif name.endswith('dir') or name == 'prefix' or name == 'exec_prefix':
+##                _metavar = 'DIR'
+##            else:
+##                _metavar = 'X'
+##        decl = { 'env_key'  : nameconv.env_key_transform(name),
+##                 'var_key'  : nameconv.var_key_transform(name),
+##                 'opt_key'  : nameconv.opt_key_transform(name),
+##                 'option'   : nameconv.option_transform(name),
+##                 'type'     : _type,
+##                 'nargs'    : 1,
+##                 'metavar'  : _metavar }
+##        if default is not MISSING:
+##            decl['default'] = default
+##        if desc is not MISSING:
+##            decl['help'] = desc
+##        return name, decl
+##
+##    defaults = kw.get('defaults', dict())
+##    name_filter = kw.get('name_filter', lambda s : True)
+##    _type = kw.get('type', 'string')
+##    metavar = kw.get('metavar')
+##    try:
+##        nameconv = kw['nameconv']
+##    except KeyError:
+##        skip = ['defaults', 'name_filter', 'nameconv', 'type', 'metavar']
+##        kw2 = { k:v for (k,v) in kw.iteritems() if k not in skip }
+##        nameconv = SConsArguments._ArgumentNameConv(**kw2)
+##    return SConsArguments.DeclareArguments(map_tuples(_callback, tuples, name_filter))
+
+def DeclareCommonArguments(args,**kw):
+    """Convert list of argument dicts.
 
     :Parameters:
-        tuples : list
-            a list of 3-element tuples with, each entry of the list should
-            be a tuple of the form ``(name, desc, default)``, where ``name``
-            is the name of argument, ``desc`` is description (used as help
-            message) and ``default`` is default value.
+        args: list
+            TODO: write documentation
 
     :Keywords:
         defaults : dict
@@ -100,9 +243,9 @@ def arguments_from_tuples(tuples, **kw):
             a `SConsArguments._ArgumentNameConv` object used to transform
             *argument* names to *endpoint* (construction variable, command-line
             variable, command-line option) names,
-        type
-            create argument of given type (default: 'string')
-        metavar
+        tools : list
+        exclude_tools : list
+        metavar : str
             use as command-line metavar
         env_key_prefix
             passed to `SConsArguments._ArgumentNameConv.__init__()`,
@@ -134,45 +277,17 @@ def arguments_from_tuples(tuples, **kw):
     :Returns:
         an instance of `SConsArguments._ArgumentDeclarations`
     """
-    # TODO: This is quite unorganized, I should get back here and elaborate
-    def _callback(name, *args):
-        try: desc = args[0]
-        except IndexError: desc = MISSING
-        try: default = defaults.get(name,args[1])
-        except IndexError: default = MISSING
-        if metavar:
-            _metavar = metavar
-        else:
-            # FIXME: especially this, how do we know in general what the
-            # metavar should we generate for a given variable, do we have any
-            # idea? This should be probably job for _ArgumentNameConv.
-            if name.endswith('ext'):
-                _metavar = 'EXT'
-            elif name.endswith('dir') or name == 'prefix' or name == 'exec_prefix':
-                _metavar = 'DIR'
-            else:
-                _metavar = 'X'
-        decl = { 'env_key'  : nameconv.env_key_transform(name),
-                 'var_key'  : nameconv.var_key_transform(name),
-                 'opt_key'  : nameconv.opt_key_transform(name),
-                 'option'   : nameconv.option_transform(name),
-                 'type'     : _type,
-                 'nargs'    : 1,
-                 'metavar'  : _metavar }
-        if default is not MISSING:
-            decl['default'] = default
-        if desc is not MISSING:
-            decl['help'] = desc
-        return name, decl
+
+    # Local keyword arguments
+    local_kws = [ 'defaults', 'tools', 'exclude_tools', 'name_filter',
+                  'nameconv', 'metavar' ]
 
     defaults = kw.get('defaults', dict())
     name_filter = kw.get('name_filter', lambda s : True)
-    _type = kw.get('type', 'string')
     metavar = kw.get('metavar')
     try:
         nameconv = kw['nameconv']
     except KeyError:
-        skip = ['defaults', 'name_filter', 'nameconv', 'type', 'metavar']
-        kw2 = { k:v for (k,v) in kw.iteritems() if k not in skip }
+        kw2 = { k:v for (k,v) in kw.iteritems() if k not in local_kws }
         nameconv = SConsArguments._ArgumentNameConv(**kw2)
-    return SConsArguments.DeclareArguments(map_tuples(_callback, tuples, name_filter))
+    return SConsArguments.DeclareArguments( )

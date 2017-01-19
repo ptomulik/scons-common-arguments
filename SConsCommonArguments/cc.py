@@ -1,4 +1,4 @@
-"""`SConsCommonArguments.CC`
+"""`SConsCommonArguments.cc`
 
 Defines arguments related to C and C++ compilers.
 
@@ -15,11 +15,11 @@ C/C++ tools. The variables defined here may be easilly added to:
 
 .. python::
     # SConstruct
-    import SConsCommonArguments.CC
+    import SConsCommonArguments.cc
 
     env = Environment(tools = [])
     var = Variables()
-    decls = SConsCommonArguments.CC.Declarations()
+    decls = SConsCommonArguments.cc.Declarations()
     args = decls.Commit(env, var, True)
     args.Postprocess(env, var, True)
 

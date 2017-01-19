@@ -1,9 +1,18 @@
-"""`SConsCommonArguments`
+"""`SConsCommonArguments.ar`
 
-This package provides definition of some commonly used SCons *arguments*
-(concept impemented in `SConsArguments` package).
+Defines arguments related to static library archiver AR
 
-TODO: write documentation
+**Supported Variables**
+
+Programs:
+
+    AR
+        The static library archiver
+
+Flags for programs:
+
+    ARFLAGS
+        General options passed to the static library archiver
 """
 
 #
@@ -29,8 +38,28 @@ TODO: write documentation
 
 __docformat__ = "restructuredText"
 
-
-## TODO: Place your code here
+_arguments = [
+  {
+      'name'        : 'AR',
+      'help'        : 'The static library archiver',
+      'metavar'     : 'PROG'
+  },
+  {
+      'name'        : 'ARFLAGS'
+      'help'        : 'General options passed to the static library archiver',
+      'metavar'     : 'FLAGS'
+  },
+  {
+      'name'        : 'RANLIB',
+      'help'        : 'The archive indexer',
+      'metavar'     : 'PROG'
+  },
+  {
+      'name'        : 'RANLIBFLAGS'
+      'help'        : 'General options passed to the archive indexer',
+      'metavar'     : 'FLAGS'
+  }
+]
 
 # Local Variables:
 # # tab-width:4
