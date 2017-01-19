@@ -1,28 +1,5 @@
-"""`SConsCommonArguments.ar`
-
-Defines arguments related to static library archiver AR
-
-**Supported Variables**
-
-Programs:
-
-    AR
-        The static library archiver
-
-    RANLIB
-        The archive indexer
-
-Flags for programs:
-
-    ARFLAGS
-        General options passed to the static library archiver
-
-    RANLIBFLAGS
-        General options passed to the archive indexer
-"""
-
 #
-# Copyright (c) 2016 by Pawel Tomulik
+# Copyright (c) 2012-2017 by Pawel Tomulik
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -44,28 +21,61 @@ Flags for programs:
 
 __docformat__ = "restructuredText"
 
-_arguments = [
-  {
-      'name'        : 'AR',
-      'help'        : 'The static library archiver',
-      'metavar'     : 'PROG'
-  },
-  {
-      'name'        : 'ARFLAGS',
-      'help'        : 'General options passed to the static library archiver',
-      'metavar'     : 'FLAGS'
-  },
-  {
-      'name'        : 'RANLIB',
-      'help'        : 'The archive indexer',
-      'metavar'     : 'PROG'
-  },
-  {
-      'name'        : 'RANLIBFLAGS',
-      'help'        : 'General options passed to the archive indexer',
-      'metavar'     : 'FLAGS'
-  }
+"""
+Tests SConsCommonArguments for 'ar' tool.
+"""
+
+import TestSCons
+
+test = TestSCons.TestSCons()
+test.dir_fixture('../../../SConsCommonArguments', 'site_scons/SConsCommonArguments')
+#test.dir_fixture('../../../site_scons/SConsArguments', 'site_scons/SConsArguments')
+test.write('SConstruct',
+"""
+# SConstruct
+import SConsCommonArguments.CC
+
+env = Environment(tools = [])
+env.Replace(CC = 'org_cc', CXXFLAGS = 'org_cxxflags')
+var = Variables()
+decls = SConsCommonArguments.CC.Declarations()
+args = decls.Commit(env, var, True)
+args.Postprocess(env, var, True)
+
+proxy = args.EnvProxy(env)
+for k in SConsCommonArguments.CC.Names():
+    print proxy.subst("%s : ${%s}" % (k, k))
+""")
+
+test_tab = [
+  (
+    [],
+    [
+        """CC : org_cc""",
+        """CXXFLAGS : org_cxxflags""",
+    ]
+  ),
+  (
+    ['CC=new_cc'],
+    [
+        """CC : new_cc""",
+        """CXXFLAGS : org_cxxflags""",
+    ]
+  ),
+  (
+    ['CXXFLAGS=new_cxxflags'],
+    [
+        """CC : org_cc""",
+        """CXXFLAGS : new_cxxflags""",
+    ]
+  ),
 ]
+
+for cli_vars, chk_lines in test_tab:
+    test.run(['-Q'] + cli_vars)
+    test.must_contain_all_lines(test.stdout(), chk_lines)
+
+test.pass_test()
 
 # Local Variables:
 # # tab-width:4
